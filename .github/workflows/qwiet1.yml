@@ -21,9 +21,9 @@ jobs:
         pip install -r requirements.txt
         ./sl analyze --wait --app shiftleft-python-demo --pythonsrc $(pwd) > slout.txt
         echo "+++++++++++++++++++++++++ Output +++++++++++++++++++++++"
-        sed  -n -e 's/\(The Scan ID for application\).*/\1/' slout.txt
-        cat slout.txt
+        cat slout.txt | sed  -E 's/\(The Scan ID for application.*\)/\1/' 
         echo "+++++++++++++++++++++++++ Output1 +++++++++++++++++++++++"
+        cat slout.txt
       env:
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
 
