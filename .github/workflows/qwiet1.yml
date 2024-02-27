@@ -21,7 +21,7 @@ jobs:
         pip install -r requirements.txt
         ./sl analyze --wait --app shiftleft-python-demo --pythonsrc $(pwd) > slout.txt
         echo "+++++++++++++++++++++++++ Output +++++++++++++++++++++++"
-        sed  -i '/The Scan ID for application.*/d/' slout.txt
+        sed  -n -e 's/\(The Scan ID for application\).*/\1/' slout.txt
         cat slout.txt
         echo "+++++++++++++++++++++++++ Output1 +++++++++++++++++++++++"
       env:
