@@ -23,9 +23,9 @@ jobs:
     - name: NextGen Static Analysis
       run: |
         pip install -r requirements.txt
-        echo "sloutput=$(./sl analyze --strict --wait --app shiftleft-python-demo --pythonsrc $(pwd))"
+        echo "sloutput=$(./sl analyze --strict --wait --app shiftleft-python-demo --pythonsrc $(pwd) > $sloutputredirect)"
         echo "++++++++++++++++++++++++++++ Now Processing scanID ++++++++++++++++++++++++++++++++"
-        echo $sloutput
+        echo $sloutputredirect
         #echo $sloutput | sed 's/.*The Scan ID for application.*/\1/'
 
       env:
