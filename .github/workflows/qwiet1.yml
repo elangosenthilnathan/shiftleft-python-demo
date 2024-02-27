@@ -20,7 +20,7 @@ jobs:
       run: |
         pip install -r requirements.txt
         #echo "sloutput=$(./sl analyze --wait --app shiftleft-python-demo --pythonsrc $(pwd)"
-        ./sl analyze --wait --app shiftleft-python-demo --pythonsrc $(pwd) > $slout
+        ./sl analyze --wait --app shiftleft-python-demo --pythonsrc $(pwd) > slout
         echo "+++++++++++++++++++++++++ Output +++++++++++++++++++++++"
         #echo $sloutput
         #echo $sloutput | sed 's/The Scan ID for application.*/(&)/g'
