@@ -16,18 +16,18 @@ jobs:
       run: |
         curl https://cdn.shiftleft.io/download/sl > sl && chmod a+rx sl
 
-    - name: NextGen Static Analysis
+    - name: SAST-Scan
       run: |
         pip install -r requirements.txt
         ./sl analyze --wait --app shiftleft-python-demo --pythonsrc $(pwd) > slout.txt
-        echo "+++++++++++++++++++++++++ Output +++++++++++++++++++++++"
         sed -i -n 's/\(The Scan ID for application.*:\)\(.*\)/\2/p' slout.txt
-        echo "+++++++++++++++++++++++++ Output1 +++++++++++++++++++++++"
-        cat slout.txt
+        echo "scanID=$(cat slout.txt)\n" >> $GITHUB_OUTPUT
       env:
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
 
         
-
+    - name: Print ScanID
+      run: |
+        echo "Scan ID is ${{ steps.SAST-Scan.outputs.scanID )}}"
 
   
