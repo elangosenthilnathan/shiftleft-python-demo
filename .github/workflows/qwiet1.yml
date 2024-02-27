@@ -22,7 +22,7 @@ jobs:
     - name: NextGen Static Analysis
       run: |
         pip install -r requirements.txt
-        sloutput = ${GITHUB_WORKSPACE}/sl analyze --strict --wait --app shiftleft-python-demo --container 18fgsa/s3-resource --tag branch=${{ github.head_ref || steps.extract_branch.outputs.branch }} --pythonsrc $(pwd)
+        echo "sloutput=${GITHUB_WORKSPACE}/sl analyze --strict --wait --app shiftleft-python-demo --container 18fgsa/s3-resource --tag branch=${{ github.head_ref || steps.extract_branch.outputs.branch }} --pythonsrc $(pwd)"
         echo $sloutput | sed 's/.*The Scan ID for application.*/\1/' > scanID
         echo scanID
       env:
