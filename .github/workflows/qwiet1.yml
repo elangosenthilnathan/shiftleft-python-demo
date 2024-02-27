@@ -26,7 +26,7 @@ jobs:
         echo "sloutput=$(./sl analyze --strict --wait --app shiftleft-python-demo --pythonsrc $(pwd))"
         echo "++++++++++++++++++++++++++++ Now Processing scanID ++++++++++++++++++++++++++++++++"
         echo "sloutput=$sloutput" >>$GITHUB_OUTPUT
-        echo '$sloutput'
+        echo $sloutput
         #echo $sloutput | sed 's/.*The Scan ID for application.*/\1/'
 
       env:
