@@ -17,14 +17,11 @@ jobs:
       run: |
         curl https://cdn.shiftleft.io/download/sl > sl && chmod a+rx sl
 
-    - name: Install reqs
-      run: |
-        pip install -r requirements.txt
-
     - name: NextGen Static Analysis
       run: |
-         echo "sloutput=$(./sl analyze --wait --app shiftleft-python-demo --pythonsrc $(pwd))
-         echo $sloutput | sed 's/The Scan ID for application.*/(&)/g'
+        pip install -r requirements.txt
+        echo "sloutput=$(./sl analyze --wait --app shiftleft-python-demo --pythonsrc $(pwd))"
+        echo $sloutput | sed 's/The Scan ID for application.*/(&)/g'
       env:
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
 
