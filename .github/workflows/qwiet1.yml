@@ -28,6 +28,6 @@ jobs:
         
     - name: Print ScanID
       run: |
-        echo "Scan ID is ${{ steps.SAST-Scan.outputs.scanID )}}"
+        echo "Scan ID is ${{ steps.SAST-Scan.outputs.scanID }}"
 
   
