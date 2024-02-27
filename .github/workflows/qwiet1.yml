@@ -25,7 +25,7 @@ jobs:
         ./sl analyze --wait --app shiftleft-python-demo --pythonsrc $(pwd) > slout.txt
         sed -i -n 's/\(The Scan ID for application.*:\)\(.*\)/\2/p' slout.txt
         cat slout.txt
-        echo "scanID=$(cat slout.txt)" >> $GITHUB_OUTPUT
+        echo "::set-output name=scanID::$(cat slout.txt)"
       env:
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
         
