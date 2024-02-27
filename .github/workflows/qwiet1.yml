@@ -20,12 +20,12 @@ jobs:
       run: |
         pip install -r requirements.txt
         #echo "sloutput=$(./sl analyze --wait --app shiftleft-python-demo --pythonsrc $(pwd)"
-        ./sl analyze --wait --app shiftleft-python-demo --pythonsrc $(pwd) > slout
+        ./sl analyze --wait --app shiftleft-python-demo --pythonsrc $(pwd) > slout.txt
         echo "+++++++++++++++++++++++++ Output +++++++++++++++++++++++"
         #echo $sloutput
         #echo $sloutput | sed 's/The Scan ID for application.*/(&)/g'
         echo "+++++++++++++++++++++++++ Output1 +++++++++++++++++++++++"
-        echo $slout
+        cat slout.txt
       env:
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
 
