@@ -25,7 +25,8 @@ jobs:
         pip install -r requirements.txt
         echo "sloutput=$(./sl analyze --strict --wait --app shiftleft-python-demo --pythonsrc $(pwd))"
         echo "++++++++++++++++++++++++++++ Now Processing scanID ++++++++++++++++++++++++++++++++"
-        echo $sloutput | sed 's/.*The Scan ID for application.*/\1/'
+        echo $sloutput
+        #echo $sloutput | sed 's/.*The Scan ID for application.*/\1/'
 
       env:
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
