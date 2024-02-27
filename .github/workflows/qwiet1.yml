@@ -10,6 +10,8 @@ on:
 jobs:
   NextGen-Static-Analysis:
     runs-on: ubuntu-20.04
+    outputs:
+      output1: ${{ steps.SAST-Scan.outputs.scanID }}    
     steps:
     - uses: actions/checkout@v3
     - name: Download ShiftLeft CLI
@@ -17,6 +19,7 @@ jobs:
         curl https://cdn.shiftleft.io/download/sl > sl && chmod a+rx sl
 
     - name: SAST-Scan
+      id: scanID
       run: |
         pip install -r requirements.txt
         ./sl analyze --wait --app shiftleft-python-demo --pythonsrc $(pwd) > slout.txt
@@ -25,6 +28,7 @@ jobs:
         echo "scanID=$(cat slout.txt)" >> $GITHUB_OUTPUT
       env:
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
+        
 
         
     - name: Print ScanID
