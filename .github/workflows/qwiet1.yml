@@ -16,22 +16,21 @@ jobs:
     - name: Download ShiftLeft CLI
       run: |
         curl https://cdn.shiftleft.io/download/sl > sl && chmod a+rx sl
-    - name: Extract branch name
-      shell: bash
-      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-      id: extract_branch
-    - name: NextGen Static Analysis
-      run: |
-        pip install -r requirements.txt
-        echo "sloutput=$(./sl analyze --strict --wait --app shiftleft-python-demo --pythonsrc $(pwd))"
-        echo "++++++++++++++++++++++++++++ Now Processing scanID ++++++++++++++++++++++++++++++++"
-        echo "sloutput=$sloutput" >>$GITHUB_OUTPUT
-        echo $sloutput
-        #echo $sloutput | sed 's/.*The Scan ID for application.*/\1/'
 
+    - name: NextGen Static Analysis
+      uses: mathiasvr/command-output@v2.0.0
+      id: scanID
+      with: 
+        run: |
+          pip install -r requirements.txt
+          ./sl analyze --strict --wait --app shiftleft-python-demo --pythonsrc $(pwd)) | sed 's/.*The Scan ID for application.*/\1/'
       env:
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
-      if:
-        ${{ hashFiles('requirements.txt') != '' }}
+
+    - name: Get ScanID
+      run:
+        echo ScanID is ${{ steps.scanID.outputs.stdout }}
+        
+
 
   
