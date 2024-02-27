@@ -1,4 +1,4 @@
----
+echo "sloutput=---
 # This workflow integrates ShiftLeft NG SAST with GitHub
 # Visit https://docs.shiftleft.io for help
 name: ShiftLeft
@@ -22,17 +22,12 @@ jobs:
         pip install -r requirements.txt
 
     - name: NextGen Static Analysis
-      uses: mathiasvr/command-output@v2.0.0
-      id: scanID
-      with: 
-        run: |
-          ./sl analyze --wait --app shiftleft-python-demo --pythonsrc $(pwd) | sed 's/The Scan ID for application.*/(&)/g'
+      run: |
+         echo "sloutput=$(./sl analyze --wait --app shiftleft-python-demo --pythonsrc $(pwd))
+         echo $sloutput | sed 's/The Scan ID for application.*/(&)/g'
       env:
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
 
-    - name: Get ScanID
-      run:
-        echo ScanID is ${{ steps.scanID.outputs.stdout }}
         
 
 
