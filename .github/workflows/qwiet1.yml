@@ -23,7 +23,7 @@ jobs:
       with: 
         run: |
           pip install -r requirements.txt
-          ./sl analyze --wait --app shiftleft-python-demo --pythonsrc $(pwd) | sed s/The Scan ID for application.*/\1/
+          ./sl analyze --wait --app shiftleft-python-demo --pythonsrc $(pwd) | sed 's/The Scan ID for application.*/\1/'
       env:
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
 
