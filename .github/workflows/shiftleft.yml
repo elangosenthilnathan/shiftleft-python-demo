@@ -1,45 +1,39 @@
 ---
-# This workflow integrates ShiftLeft NG SAST with GitHub
+# This workflow integrates qwiet.ai preZero with GitHub
 # Visit https://docs.shiftleft.io for help
-name: ShiftLeft
+name: qwiet.ai
 
+on:
+  pull_request:
+  workflow_dispatch:
 
 jobs:
   NextGen-Static-Analysis:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
     - name: Download ShiftLeft CLI
       run: |
         curl https://cdn.shiftleft.io/download/sl > ${GITHUB_WORKSPACE}/sl && chmod a+rx ${GITHUB_WORKSPACE}/sl
-    - name: Extract branch name
-      shell: bash
-      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-      id: extract_branch
-    - name: NextGen Static Analysis
+
+    - name: preZero Static Analysis
       run: |
         pip install -r requirements.txt
-        ${GITHUB_WORKSPACE}/sl analyze --strict --wait --app shiftleft-python-demo --container 18fgsa/s3-resource --tag branch=${{ github.head_ref || steps.extract_branch.outputs.branch }} --pythonsrc $(pwd)
+
+        ${GITHUB_WORKSPACE}/sl --version
+        ${GITHUB_WORKSPACE}/sl analyze --strict --wait \
+          --app shiftleft-python-demo \
+          --tag branch=${{ github.head_ref }} \
+          --pythonsrc --container 18fgsa/s3-resource $(pwd)
       env:
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
         SHIFTLEFT_API_HOST: www.shiftleft.io
         SHIFTLEFT_GRPC_TELEMETRY_HOST: telemetry.shiftleft.io:443
         SHIFTLEFT_GRPC_API_HOST: api.shiftleft.io:443
-      if:
-        ${{ hashFiles('requirements.txt') != '' }}
-    - name: Legacy Static Analysis
-      run: |
-        echo "Please update your `shiftleft-python-demo` fork!"
-        ${GITHUB_WORKSPACE}/sl analyze --strict --wait --no-cpg --app shiftleft-python-demo --tag branch=${{ github.head_ref || steps.extract_branch.outputs.branch }} --python $(pwd)
-      env:
-        SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
-        SHIFTLEFT_API_HOST: www.shiftleft.io
-        SHIFTLEFT_GRPC_TELEMETRY_HOST: telemetry.shiftleft.io:443
-        SHIFTLEFT_GRPC_API_HOST: api.shiftleft.io:443
-      if:
-        ${{ hashFiles('requirements.txt') == '' }}
-  Build-Rules: 
+
+  Build-Rules:
     runs-on: ubuntu-latest
+    permissions: write-all
     needs: NextGen-Static-Analysis
     steps:
     - uses: actions/checkout@v3
@@ -57,5 +51,6 @@ jobs:
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
         SHIFTLEFT_API_HOST: www.shiftleft.io
         SHIFTLEFT_GRPC_TELEMETRY_HOST: telemetry.shiftleft.io:443
-        SHIFTLEFT_GRPC_API_HOST: api.shiftleft.io:443 
-  
+        SHIFTLEFT_GRPC_API_HOST: api.shiftleft.io:443
+
+
