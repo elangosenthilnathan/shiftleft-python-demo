@@ -9,22 +9,29 @@ on:
 
 jobs:
   NextGen-Static-Analysis:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
     - uses: actions/checkout@v3
     - name: Download ShiftLeft CLI
       run: |
-        curl https://cdn.shiftleft.io/download/sl > ${GITHUB_WORKSPACE}/sl && chmod a+rx ${GITHUB_WORKSPACE}/sl
+        Invoke-WebRequest -Uri https://cdn.shiftleft.io/download/sl-latest-windows-x64.zip -UseBasicParsing -OutFile sl-latest-windows-x64.zip
+        Expand-Archive -Path sl-latest-windows-x64.zip -DestinationPath .
+
+    - name: setup-python 3.8
+      id: setup-python
+      uses: ./
+      with:
+        python-version: 3.8.10        
 
     - name: preZero Static Analysis
       run: |
+        python --version
         pip install -r requirements.txt
-
-        ${GITHUB_WORKSPACE}/sl --version
-        ${GITHUB_WORKSPACE}/sl analyze --strict --wait \
+        
+        ./sl.exe analyze --strict --wait \
           --app shiftleft-python-demo \
           --tag branch=${{ github.head_ref }} \
-          --pythonsrc --container 18fgsa/s3-resource $(pwd)
+          --python $(pwd)
       env:
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
         SHIFTLEFT_API_HOST: www.shiftleft.io
