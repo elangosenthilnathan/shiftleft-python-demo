@@ -18,6 +18,8 @@ def create_user():
         return jsonify({"error": "access level of 0 is required for this action"})
     username = request.form.get("username")
     password = request.form.get("password")
+    AWSKEY = "sececejye="
+    AWSSECRET = "2387jhsd68723kjsjhjnc772hklcasdhkmnc8623786hjsdmb"
     access_level = request.form.get("access_level")
     if username is None or password is None or access_level is None:
         return (
