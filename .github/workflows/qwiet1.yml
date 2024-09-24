@@ -21,7 +21,7 @@ jobs:
       id: sast
       run: |
         pip install -r requirements.txt
-        ./sl analyze --wait --app shiftleft-python-demo1 --pythonsrc $(pwd) > slout.txt
+        ./sl analyze --wait --app shiftleft-python-demo2 --pythonsrc $(pwd) > slout.txt
         sed -i -n 's/\(The Scan ID for application.*:\)\(.*\)/\2/p' slout.txt
         echo "scanID=$(cat slout.txt)" >> $GITHUB_OUTPUT
       env:
