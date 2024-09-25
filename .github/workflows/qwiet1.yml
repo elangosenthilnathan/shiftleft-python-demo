@@ -20,15 +20,10 @@ jobs:
     - name: sast
       id: sast
       run: |
-        pip install -r requirements.txt
-        ./sl analyze --wait --app shiftleft-python-demo2 --pythonsrc $(pwd) > slout.txt
-        sed -i -n 's/\(The Scan ID for application.*:\)\(.*\)/\2/p' slout.txt
-        echo "scanID=$(cat slout.txt)" >> $GITHUB_OUTPUT
+        sl analyze --wait --app shiftleft-python-demo3 --pythonsrc $(pwd) 
       env:
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
    
-    - name: Print ScanID
-      run: |
-        echo "Scan ID is ${{ steps.sast.outputs.scanid }}"
+ 
 
   
