@@ -20,7 +20,7 @@ jobs:
     - name: sast
       id: sast
       run: |
-        sl analyze --wait --app shiftleft-python-demo3 --pythonsrc $(pwd) 
+        ./sl analyze --wait --app shiftleft-python-demo3 --pythonsrc $(pwd) 
       env:
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
    
