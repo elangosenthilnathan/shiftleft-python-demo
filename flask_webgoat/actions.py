@@ -2,7 +2,7 @@ import pickle
 import base64
 from pathlib import Path
 import subprocess
-
+import shlex
 from flask import Blueprint, request, jsonify, session
 
 bp = Blueprint("actions", __name__)
@@ -42,7 +42,7 @@ def grep_processes():
     name = request.args.get("name")
     # vulnerability: Remote Code Execution
     res = subprocess.run(
-        ["ps aux | grep " + name + " | awk '{print $11}'"],
+        shlex.quote(f"ps aux | grep {name} | awk '{{print $11}}'"),
         shell=True,
         capture_output=True,
     )
@@ -60,3 +60,7 @@ def deserialized_descr():
     # vulnerability: Insecure Deserialization
     deserialized = pickle.loads(data)
     return jsonify({"success": True, "description": str(deserialized)})
+
+
+
+
