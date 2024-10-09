@@ -8,21 +8,34 @@ on:
   push:
 
 jobs:
-  NextGen-Static-Analysis:
-    runs-on: ubuntu-20.04
- 
+  Qwiet-Static-Analysis:
+    runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
+
     - name: Download ShiftLeft CLI
       run: |
-        curl https://cdn.shiftleft.io/download/sl > sl && chmod a+rx sl
+        curl https://cdn.shiftleft.io/download/sl > ./sl && chmod a+rx ./sl 
 
-    - name: sast
-      id: sast
+    - name: Run sl analyze
+      shell: bash
       run: |
-        ./sl analyze --wait --app shiftleft-python-demo3 --pythonsrc $(pwd) 
+        ./sl analyze --verbose --app multisecrets --wait .
       env:
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
+
+    - name: Export Sarif Report
+      shell: bash
+      run: |
+        git clone https://github.com/ShiftLeftSecurity/field-integrations report
+        python3 report/shiftleft-utils/export.py --app multisecrets --format "sarif" --report_file report/qwiet-sarif-report.sarif
+
+    - name: Upload result to GitHub Code Scanning
+      uses: github/codeql-action/upload-sarif@v2
+      with:
+        sarif_file: report/qwiet-sarif-report.sarif       
+
    
  
 
