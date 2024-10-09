@@ -29,6 +29,7 @@ jobs:
       shell: bash
       run: |
         git clone https://github.com/ShiftLeftSecurity/field-integrations report
+        pip3 install -r report/shiftleft-utils/requirements.txt
         python3 report/shiftleft-utils/export.py --app multisecrets --format "sarif" --report_file report/qwiet-sarif-report.sarif
 
     - name: Upload result to GitHub Code Scanning
