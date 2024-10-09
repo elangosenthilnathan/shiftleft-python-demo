@@ -21,7 +21,7 @@ jobs:
     - name: Run sl analyze
       shell: bash
       run: |
-        ./sl analyze --verbose --app multisecrets --wait .
+        ./sl analyze --verbose --app newtest --wait .
       env:
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
 
@@ -30,14 +30,14 @@ jobs:
       run: |
         git clone https://github.com/ShiftLeftSecurity/field-integrations report
         pip3 install -r report/shiftleft-utils/requirements.txt
-        python3 report/shiftleft-utils/export.py --app multisecrets --format "sarif" --report_file report/qwiet-sarif-report.sarif
+        python3 report/shiftleft-utils/export.py --app newtest --format "sarif" --report_file report/qwiet-sarif-report.sarif
       env:
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}        
 
     - name: Upload result to GitHub Code Scanning
       uses: github/codeql-action/upload-sarif@v2
       with:
-        sarif_file: report/qwiet-sarif-report-multisecrets.sarif       
+        sarif_file: report/qwiet-sarif-report-newtest.sarif       
 
    
  
