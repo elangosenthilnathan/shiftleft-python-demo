@@ -25,7 +25,7 @@ jobs:
       env:
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
 
-    - name: Export Sarif Reportqwiet
+    - name: Export Sarif Report qwiet
       shell: bash
       run: |
         git clone https://github.com/ShiftLeftSecurity/field-integrations report
