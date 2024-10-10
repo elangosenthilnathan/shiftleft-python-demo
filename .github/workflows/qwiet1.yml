@@ -1,6 +1,6 @@
-# This workflow integrates ShiftLeft NG SAST with GitHub
+# This workflow integrates Qwiet preZero with GitHub
 # Visit https://docs.shiftleft.io for help
-name: ShiftLeft
+name: Qwiet
 
 on:
   pull_request:
