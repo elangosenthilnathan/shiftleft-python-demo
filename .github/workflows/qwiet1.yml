@@ -30,7 +30,7 @@ jobs:
       env:
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
 
-    - name: Export Sarif Report qwiet
+    - name: Export Sarif Report qwiet ai
       shell: bash
       run: |
         git clone --branch Fix-DuplicateFinding-Export --single-branch https://github.com/ShiftLeftSecurity/field-integrations report
