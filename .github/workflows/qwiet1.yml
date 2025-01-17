@@ -23,7 +23,7 @@ jobs:
       run: |
         curl https://cdn.shiftleft.io/download/sl > ./sl && chmod a+rx ./sl 
 
-    - name: Run sl analyze
+    - name: Run sl analyze 1
       shell: bash
       run: |
         ./sl analyze --verbose --app Qwiet-GoLang-BB2 .
