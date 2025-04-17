@@ -1,0 +1,23 @@
+---
+name: Qwiet pre-zero Demo
+
+on:
+  pull_request:
+  workflow_dispatch:
+  push:
+
+jobs:
+  Qwiet-Static-Analysis:
+    runs-on: ubuntu-latest
+
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    steps:
+      - uses: elangosenthilnathan/Qwiet-preZero@v6
+        with:
+          shiftleft-access-token: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
+          verbose: false # not mandatory
+          importGitHub: true # not mandatory
