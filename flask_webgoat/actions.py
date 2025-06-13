@@ -24,7 +24,7 @@ def log_entry():
     if text_param is None:
         return jsonify({"error": "text parameter is required"})
 
-    # Sanitize filename_param to prevent directory traversal
+    # Removing dangerous characters to prevent directory traversal
     filename_param = re.sub(r'[^\w\s-]', '', filename_param)
 
     user_id = user_info[0]
@@ -43,7 +43,8 @@ def log_entry():
 @bp.route("/grep_processes")
 def grep_processes():
     name = request.args.get("name")
-    # vulnerability: Remote Code Execution
+    # Removing dangerous characters to prevent command injection
+    name = re.sub(r'[^\w\s-]', '', name)
     res = subprocess.run(
         ["ps aux | grep " + name + " | awk '{print $11}'"],
         shell=True,
@@ -63,4 +64,5 @@ def deserialized_descr():
     # vulnerability: Insecure Deserialization
     deserialized = pickle.loads(data)
     return jsonify({"success": True, "description": str(deserialized)})
+
 
