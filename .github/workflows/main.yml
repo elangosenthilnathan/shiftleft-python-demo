@@ -1,5 +1,5 @@
 ---
-name: Qwiet pre-zero Demo1
+name: Qwiet pre-zero Demo
 
 on:
   pull_request:
@@ -19,11 +19,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    # - name: Download ShiftLeft CLI
-    #   run: |
-    #     curl https://cdn.shiftleft.io/download/sl > ./sl && chmod a+rx ./sl 
-    
-    - name: Run sl analyze 1
+    - name: Run sl analyze
       shell: bash
       run: |
         sl analyze --verbose --wait --app "${GITHUB_REPOSITORY_OWNER}_${GITHUB_REPOSITORY#*/}" .
@@ -33,7 +29,6 @@ jobs:
     - name: Generate Sarif Report
       shell: bash
       run: |
-        #export SHIFTLEFT_ORG_ID="eba14690-d605-4f85-b5e3-b2992e9174b0"
         sl sarif export --app elangosenthilnathan_shiftleft-python-demo --report-file sarif.json
       env:
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}        
