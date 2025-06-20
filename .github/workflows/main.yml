@@ -9,7 +9,7 @@ on:
 jobs:
   Qwiet-Static-Analysis:
     runs-on: ubuntu-latest
-    container: shiftleft/core:latest
+    #container: shiftleft/core:latest
 
     permissions:
       actions: read
@@ -19,6 +19,10 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Download ShiftLeft CLI
+      run: |
+        curl https://cdn.shiftleft.io/download/sl > ./sl && chmod a+rx ./sl 
+    
     # - name: Run sl analyze 1
     #   shell: bash
     #   run: |
@@ -29,7 +33,7 @@ jobs:
     - name: Generate Sarif Report
       shell: bash
       run: |
-        sl sarif export --app elangosenthilnathan_shiftleft-python-demo --report-file sarif.json
+        ./sl sarif export --app elangosenthilnathan_shiftleft-python-demo --report-file sarif.json
 
     - name: Upload result to GitHub Code Scanning
       uses: github/codeql-action/upload-sarif@v3
