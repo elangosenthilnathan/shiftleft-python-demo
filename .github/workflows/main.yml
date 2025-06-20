@@ -33,8 +33,10 @@ jobs:
     - name: Generate Sarif Report
       shell: bash
       run: |
-        export SHIFTLEFT_ORG_ID="eba14690-d605-4f85-b5e3-b2992e9174b0"
+        #export SHIFTLEFT_ORG_ID="eba14690-d605-4f85-b5e3-b2992e9174b0"
         sl sarif export --app elangosenthilnathan_shiftleft-python-demo --report-file sarif.json
+      env:
+        SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}        
 
     - name: Upload result to GitHub Code Scanning
       uses: github/codeql-action/upload-sarif@v3
