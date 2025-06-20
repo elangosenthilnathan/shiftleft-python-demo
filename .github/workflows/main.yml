@@ -33,6 +33,7 @@ jobs:
     - name: Generate Sarif Report
       shell: bash
       run: |
+        export orgId="eba14690-d605-4f85-b5e3-b2992e9174b0"
         ./sl sarif export --app elangosenthilnathan_shiftleft-python-demo --report-file sarif.json
 
     - name: Upload result to GitHub Code Scanning
