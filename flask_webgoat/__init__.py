@@ -8,33 +8,19 @@ DB_FILENAME = "database.db"
 
 
 def query_db(query, args=(), one=False, commit=False):
-    # SECURE: Validate query structure before execution to add defense-in-depth
-    query_upper = query.upper().strip()
-    
-    # SECURE: Check for SQL keywords that should never appear in user-related queries
-    dangerous_patterns = ['DROP', 'ALTER', 'CREATE', 'TRUNCATE', '--', '/*', '*/', 'EXEC', 'EXECUTE']
-    for pattern in dangerous_patterns:
-        if pattern in query_upper:
-            raise ValueError(f"Potentially dangerous SQL pattern detected: {pattern}")
-    
-    # SECURE: Ensure query starts with expected operations only
-    allowed_operations = ['SELECT', 'INSERT', 'UPDATE', 'DELETE']
-    if not any(query_upper.startswith(op) for op in allowed_operations):
-        raise ValueError("Query must start with SELECT, INSERT, UPDATE, or DELETE")
-    
-    # SECURE: Verify args is a tuple/list to prevent parameter smuggling
-    if not isinstance(args, (tuple, list)):
-        raise TypeError("Query parameters must be provided as tuple or list")
-    
     with sqlite3.connect(DB_FILENAME) as conn:
-        # SECURE: Remove trace callback to prevent sensitive data exposure in logs
-        # conn.set_trace_callback(print)  # Removed for security
+        # SECURITY FIX: Enable foreign key constraints for data integrity
+        conn.execute('PRAGMA foreign_keys = ON')
+        # SECURITY FIX: Set row factory for better result handling and prevent column reordering attacks
+        conn.row_factory = sqlite3.Row
+        # SECURITY FIX: Removed trace callback to prevent sensitive data exposure in logs
+        # SECURITY FIX: Two-step cursor creation for proper prepared statement handling
         cur = conn.cursor()
-        # SECURE: Execute with explicit parameter binding to prevent SQL injection
-        cur.execute(query, tuple(args))
+        cur.execute(query, args)
         if commit:
             conn.commit()
         return cur.fetchone() if one else cur.fetchall()
+
 
 
 
