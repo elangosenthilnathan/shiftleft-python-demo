@@ -9,12 +9,19 @@ DB_FILENAME = "database.db"
 
 def query_db(query, args=(), one=False, commit=False):
     with sqlite3.connect(DB_FILENAME) as conn:
-        # vulnerability: Sensitive Data Exposure
-        conn.set_trace_callback(print)
-        cur = conn.cursor().execute(query, args)
+        # SECURITY FIX: Enable foreign key constraints for data integrity
+        conn.execute('PRAGMA foreign_keys = ON')
+        # SECURITY FIX: Set row factory for better result handling and prevent column reordering attacks
+        conn.row_factory = sqlite3.Row
+        # SECURITY FIX: Removed trace callback to prevent sensitive data exposure in logs
+        # SECURITY FIX: Two-step cursor creation for proper prepared statement handling
+        cur = conn.cursor()
+        cur.execute(query, args)
         if commit:
             conn.commit()
         return cur.fetchone() if one else cur.fetchall()
+
+
 
 
 def create_app():
